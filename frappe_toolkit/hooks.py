@@ -1,7 +1,7 @@
 app_name = "frappe_toolkit"
 app_title = "Frappe Toolkit"
-app_publisher = "badal"
-app_description = "Toolkit for frappe"
+app_publisher = "Badal"
+app_description = "A collection of useful tools and enhancements for Frappe"
 app_email = "badalsahani8381@gmail.com"
 app_license = "mit"
 
@@ -25,8 +25,8 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/frappe_toolkit/css/frappe_toolkit.css"
-# app_include_js = "/assets/frappe_toolkit/js/frappe_toolkit.js"
+app_include_css = "/assets/frappe_toolkit/css/frappe_toolkit_sidebar.css"
+app_include_js = "/assets/frappe_toolkit/js/frappe_toolkit_sidebar.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/frappe_toolkit/css/frappe_toolkit.css"
@@ -86,7 +86,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "frappe_toolkit.install.before_install"
-# after_install = "frappe_toolkit.install.after_install"
+after_install = "frappe_toolkit.install.after_install"
 
 # Uninstallation
 # ------------

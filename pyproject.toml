@@ -1,9 +1,9 @@
 [project]
 name = "frappe_toolkit"
 authors = [
-    { name = "badal", email = "badalsahani8381@gmail.com"}
+    { name = "Badal", email = "badalsahani8381@gmail.com"}
 ]
-description = "Toolkit for frappe"
+description = "A collection of useful tools and enhancements for Frappe"
 requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]
