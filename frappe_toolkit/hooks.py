@@ -86,7 +86,7 @@ app_include_js = "/assets/frappe_toolkit/js/frappe_toolkit_sidebar.js"
 # ------------
 
 # before_install = "frappe_toolkit.install.before_install"
-after_install = "frappe_toolkit.install.after_install"
+# after_install = "frappe_toolkit.install.after_install"
 
 # Uninstallation
 # ------------
