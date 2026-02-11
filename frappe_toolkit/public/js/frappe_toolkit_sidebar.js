@@ -115,6 +115,10 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 		if (item.type === 'URL' || item.type === 'section') return null;
 		if (!item.type) return null;
 
+		if (item.type === 'Workspace') {
+			return item.link_to ? frappe.router.slug(item.link_to) : null;
+		}
+
 		let route = frappe.utils.generate_route({
 			type: item.type,
 			name: item.link_to,
@@ -154,6 +158,12 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 
 						if (nav_item.type === 'URL') {
 							window.open(nav_item.url, '_blank');
+							return;
+						}
+
+						if (nav_item.type === 'Workspace') {
+							let slug = nav_item.link_to ? frappe.router.slug(nav_item.link_to) : null;
+							if (slug) frappe.set_route(slug);
 							return;
 						}
 
