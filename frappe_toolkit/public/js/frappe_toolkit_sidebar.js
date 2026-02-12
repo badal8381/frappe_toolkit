@@ -36,6 +36,7 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 	setup() {
 		if ($('#awesome-sidebar').length > 0) return;
 		this.inject_sidebar();
+		this.inject_mobile_toggle();
 		this.bind_events();
 	}
 
@@ -104,6 +105,34 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 		this.render_items();
 	}
 
+	inject_mobile_toggle() {
+		if ($('#awesome-mobile-toggle').length > 0) return;
+
+		// Floating hamburger button
+		$(`<button id="awesome-mobile-toggle" aria-label="Open menu">
+			<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+		</button>`).appendTo('body');
+
+		// Overlay backdrop
+		$('<div id="awesome-sidebar-overlay"></div>').appendTo('body');
+
+		// Events
+		$('#awesome-mobile-toggle').on('click', () => this.mobile_open());
+		$('#awesome-sidebar-overlay').on('click', () => this.mobile_close());
+	}
+
+	mobile_open() {
+		$('#awesome-sidebar').addClass('mobile-open');
+		$('#awesome-sidebar-overlay').addClass('active');
+		$('#awesome-mobile-toggle').hide();
+	}
+
+	mobile_close() {
+		$('#awesome-sidebar').removeClass('mobile-open');
+		$('#awesome-sidebar-overlay').removeClass('active');
+		$('#awesome-mobile-toggle').show();
+	}
+
 	toggle_collapse() {
 		this.collapsed = !this.collapsed;
 		localStorage.setItem('awesome_sidebar_collapsed', this.collapsed ? '1' : '0');
@@ -119,6 +148,14 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 			return item.link_to ? frappe.router.slug(item.link_to) : null;
 		}
 
+		if (item.type === 'Page' && item.link_to) {
+			return item.link_to;
+		}
+
+		if (item.type === 'Dashboard' && item.link_to) {
+			return 'dashboard-view/' + item.link_to;
+		}
+
 		let route = frappe.utils.generate_route({
 			type: item.type,
 			name: item.link_to,
@@ -130,6 +167,7 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 	}
 
 	render_items() {
+		const self = this;
 		const $container = $('#awesome-sidebar .awesome-scroll-section');
 		$container.empty();
 
@@ -157,26 +195,36 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 						$(this).addClass('active');
 
 						if (nav_item.type === 'URL') {
-							window.open(nav_item.url, '_blank');
+							window.open(nav_item.url, nav_item.open_in_new_tab ? '_blank' : '_self');
 							return;
 						}
+
+						let target_route = null;
 
 						if (nav_item.type === 'Workspace') {
-							let slug = nav_item.link_to ? frappe.router.slug(nav_item.link_to) : null;
-							if (slug) frappe.set_route(slug);
-							return;
+							target_route = nav_item.link_to ? frappe.router.slug(nav_item.link_to) : null;
+						} else if (nav_item.type === 'Page' && nav_item.link_to) {
+							target_route = nav_item.link_to;
+						} else if (nav_item.type === 'Dashboard' && nav_item.link_to) {
+							target_route = 'dashboard-view/' + nav_item.link_to;
+						} else {
+							target_route = frappe.utils.generate_route({
+								type: nav_item.type,
+								name: nav_item.link_to,
+								doctype: nav_item.type === 'DocType' ? nav_item.link_to : undefined,
+								doc_view: nav_item.doc_view || undefined,
+							});
 						}
 
-						let r = frappe.utils.generate_route({
-							type: nav_item.type,
-							name: nav_item.link_to,
-							doctype: nav_item.type === 'DocType' ? nav_item.link_to : undefined,
-							doc_view: nav_item.doc_view || undefined,
-						});
-
-						if (r) {
-							frappe.set_route(r);
+						if (target_route) {
+							if (nav_item.open_in_new_tab) {
+								window.open('/app/' + target_route, '_blank');
+							} else {
+								frappe.set_route(target_route);
+							}
 						}
+						// Close mobile drawer after navigation
+						self.mobile_close();
 					};
 				})(item));
 

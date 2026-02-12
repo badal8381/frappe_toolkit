@@ -20,5 +20,6 @@ def get_sidebar_items():
 				"link_to": row.link_to or "",
 				"doc_view": row.doc_view or "",
 				"url": row.url or "",
+				"open_in_new_tab": row.open_in_new_tab or 0,
 			})
 	return items

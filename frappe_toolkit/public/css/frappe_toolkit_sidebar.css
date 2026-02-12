@@ -404,12 +404,150 @@ body.awesome-sidebar-active.awesome-sidebar-collapsed {
 	left: calc(100% - 17px);
 }
 
-/* Mobile: hide sidebar on small screens */
+/* Mobile: slide-out drawer with hamburger toggle */
 @media (max-width: 768px) {
-	#awesome-sidebar {
-		display: none;
-	}
-	body.awesome-sidebar-active, body.awesome-sidebar-active.awesome-sidebar-collapsed {
+	body.awesome-sidebar-active,
+	body.awesome-sidebar-active.awesome-sidebar-collapsed {
 		padding-left: 0 !important;
 	}
+
+	#awesome-sidebar {
+		width: 240px;
+		transform: translateX(-100%);
+		transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+		z-index: 1060;
+		box-shadow: none;
+	}
+	#awesome-sidebar.collapsed {
+		width: 240px;
+	}
+	#awesome-sidebar.mobile-open {
+		transform: translateX(0);
+		box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+	}
+
+	/* Hide collapse button on mobile — not needed */
+	#awesome-sidebar .awesome-collapse-btn {
+		display: none;
+	}
+	/* Always show labels on mobile (never icon-only) */
+	#awesome-sidebar.collapsed .awesome-nav-label,
+	#awesome-sidebar.collapsed .awesome-btn-label {
+		display: inline;
+	}
+	#awesome-sidebar.collapsed .awesome-nav-item {
+		justify-content: flex-start;
+		padding: 0 10px;
+		gap: 8px;
+		width: auto;
+		height: 30px;
+		margin: 0;
+	}
+	#awesome-sidebar.collapsed .awesome-btn-row {
+		justify-content: flex-start;
+		padding: 0 10px;
+		gap: 8px;
+		width: auto;
+		height: 30px;
+		margin: 0 0 2px;
+	}
+	#awesome-sidebar.collapsed .awesome-section-label {
+		opacity: 1;
+		width: auto;
+	}
+	#awesome-sidebar.collapsed .awesome-section-header {
+		padding: 10px 10px 4px;
+		display: block;
+	}
+	#awesome-sidebar.collapsed .awesome-section-divider {
+		display: none;
+	}
+	#awesome-sidebar.collapsed .awesome-theme-toggle {
+		width: 100%;
+		height: 30px;
+		padding: 0 6px;
+	}
+	#awesome-sidebar.collapsed .awesome-theme-row {
+		padding: 4px 6px;
+	}
+	#awesome-sidebar.collapsed .awesome-toggle-icon {
+		width: 14px;
+		height: 14px;
+	}
+	#awesome-sidebar.collapsed .awesome-toggle-knob {
+		width: 24px;
+		height: 24px;
+		top: 3px;
+		left: 3px;
+	}
+	#awesome-sidebar.collapsed .awesome-theme-toggle.is-dark .awesome-toggle-knob {
+		left: calc(100% - 27px);
+	}
+
+	/* Hide Frappe's default hamburger on mobile when awesome sidebar is active */
+	body.awesome-sidebar-active .sidebar-toggle-btn {
+		display: none !important;
+	}
+
+	/* Floating FAB toggle */
+	#awesome-mobile-toggle {
+		display: flex;
+	}
+
+	/* Overlay */
+	#awesome-sidebar-overlay {
+		display: none;
+		position: fixed;
+		top: 0; left: 0; right: 0; bottom: 0;
+		background: rgba(0, 0, 0, 0.35);
+		z-index: 1055;
+		opacity: 0;
+		transition: opacity 0.25s ease;
+	}
+	#awesome-sidebar-overlay.active {
+		display: block;
+		opacity: 1;
+	}
+}
+
+/* Desktop: hide FAB and overlay */
+@media (min-width: 769px) {
+	#awesome-mobile-toggle {
+		display: none !important;
+	}
+	#awesome-sidebar-overlay {
+		display: none !important;
+	}
+}
+
+/* FAB button styling */
+#awesome-mobile-toggle {
+	position: fixed;
+	bottom: 16px;
+	left: 16px;
+	z-index: 1050;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background-color: var(--primary);
+	color: #fff;
+	border: none;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: transform 0.2s ease;
+	-webkit-tap-highlight-color: transparent;
+}
+#awesome-mobile-toggle:active {
+	transform: scale(0.9);
+}
+#awesome-mobile-toggle svg {
+	width: 20px;
+	height: 20px;
+	stroke: #fff;
+	fill: none;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }
