@@ -278,6 +278,23 @@ body.awesome-sidebar-active.awesome-sidebar-collapsed {
 	background-color: var(--subtle-accent, var(--gray-200));
 }
 
+/* Logout button */
+.awesome-logout-btn {
+	color: var(--ink-gray-5, var(--text-muted));
+}
+.awesome-logout-btn:hover {
+	background-color: var(--red-50, #fef2f2) !important;
+	color: var(--red-600, #dc2626) !important;
+}
+.awesome-logout-btn:hover .awesome-btn-label {
+	color: var(--red-600, #dc2626) !important;
+}
+.awesome-logout-icon svg {
+	width: 16px;
+	height: 16px;
+	stroke-width: 1.5;
+}
+
 /* Collapse toggle icon rotation */
 .awesome-collapse-icon {
 	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);

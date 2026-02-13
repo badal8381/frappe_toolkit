@@ -12,6 +12,7 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 
 	init_when_ready() {
 		if (window.frappe && frappe.boot) {
+			this.disable_native_sidebar();
 			this.fetch_items();
 		} else {
 			setTimeout(() => this.init_when_ready(), 100);
@@ -40,6 +41,16 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 		this.bind_events();
 	}
 
+	disable_native_sidebar() {
+		// Prevent Frappe's native sidebar from initializing (avoids errors
+		// when workspaces are removed but still referenced in sidebar items)
+		if (frappe.app && frappe.app.sidebar) {
+			frappe.app.sidebar.setup = function () {};
+			frappe.app.sidebar.make_sidebar = function () {};
+			frappe.app.sidebar.toggle = function () {};
+		}
+	}
+
 	is_dark() {
 		let mode = document.documentElement.getAttribute('data-theme-mode') || 'light';
 		if (mode === 'dark') return true;
@@ -53,6 +64,21 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 		frappe.ui.set_theme();
 		frappe.xcall('frappe.core.doctype.user.user.switch_theme', { theme: frappe.utils.to_title_case(next) });
 		this.update_theme_toggle();
+	}
+
+	confirm_logout() {
+		this.mobile_close();
+		frappe.confirm(
+			__('Are you sure you want to logout?'),
+			() => {
+				frappe.call({
+					method: 'logout',
+					callback: () => {
+						window.location.href = '/login';
+					}
+				});
+			}
+		);
 	}
 
 	update_theme_toggle() {
@@ -85,6 +111,16 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 						${avatar_html}
 						<span class="awesome-btn-label">${user_fullname}</span>
 					</div>
+					<div class="awesome-btn-row awesome-logout-btn" title="Logout">
+						<div class="awesome-btn-icon awesome-logout-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+								<polyline points="16 17 21 12 16 7"/>
+								<line x1="21" y1="12" x2="9" y2="12"/>
+							</svg>
+						</div>
+						<span class="awesome-btn-label">Logout</span>
+					</div>
 					<div class="awesome-btn-row awesome-collapse-btn" title="Collapse">
 						<div class="awesome-btn-icon awesome-collapse-icon">${frappe.utils.icon('left', 'md')}</div>
 						<span class="awesome-btn-label">Collapse</span>
@@ -100,6 +136,7 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 		$sidebar.find('.awesome-user-btn').on('click', () => {
 			frappe.set_route('user', frappe.session.user);
 		});
+		$sidebar.find('.awesome-logout-btn').on('click', () => this.confirm_logout());
 		$sidebar.find('.awesome-collapse-btn').on('click', () => this.toggle_collapse());
 
 		this.render_items();
