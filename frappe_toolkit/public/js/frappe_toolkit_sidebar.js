@@ -298,7 +298,12 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 			return s;
 		};
 
-		let route_str = frappe.get_route_str ? frappe.get_route_str() : null;
+		let route_str;
+		try {
+			route_str = frappe.get_route_str ? frappe.get_route_str() : null;
+		} catch (e) {
+			return;
+		}
 		if (!route_str) return;
 		let target = normalize(route_str);
 		let best_match = null;
