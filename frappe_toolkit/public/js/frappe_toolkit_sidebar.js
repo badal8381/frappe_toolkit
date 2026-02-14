@@ -42,12 +42,43 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 	}
 
 	disable_native_sidebar() {
-		// Prevent Frappe's native sidebar from initializing (avoids errors
+		// Prevent Frappe's native sidebar from rendering (avoids errors
 		// when workspaces are removed but still referenced in sidebar items)
 		if (frappe.app && frappe.app.sidebar) {
 			frappe.app.sidebar.setup = function () {};
 			frappe.app.sidebar.make_sidebar = function () {};
 			frappe.app.sidebar.toggle = function () {};
+		}
+
+		// Initialize AwesomeBar search (normally done by native sidebar)
+		// so that Ctrl+G / Ctrl+K keyboard shortcuts work
+		this.setup_awesomebar();
+	}
+
+	setup_awesomebar() {
+		if (!frappe.boot.desk_settings || !frappe.boot.desk_settings.search_bar) return;
+		if (!frappe.search || !frappe.search.AwesomeBar) return;
+
+		// Create a hidden search trigger button if it doesn't exist
+		if ($('#navbar-modal-search').length === 0) {
+			$('<button id="navbar-modal-search" class="hidden"></button>').appendTo('body');
+		}
+
+		let awesome_bar = new frappe.search.AwesomeBar();
+		awesome_bar.setup('#navbar-modal-search');
+
+		if (frappe.search.utils && frappe.search.utils.make_function_searchable) {
+			if (frappe.utils.generate_tracking_url) {
+				frappe.search.utils.make_function_searchable(
+					frappe.utils.generate_tracking_url,
+					__('Generate Tracking URL')
+				);
+			}
+			if (frappe.model.can_read('RQ Job')) {
+				frappe.search.utils.make_function_searchable(function () {
+					frappe.set_route('List', 'RQ Job');
+				}, __('Background Jobs'));
+			}
 		}
 	}
 
