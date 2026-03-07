@@ -3,7 +3,7 @@ from frappe.model.document import Document
 
 
 class SidebarSettings(Document):
-	def validate(self):
+	def before_validate(self):
 		for item in self.items:
 			if item.type in ("URL", "Section"):
 				item.link_doctype = ""
