@@ -10,6 +10,7 @@
   "open_in_new_tab",
   "section_break_bjjh",
   "type",
+  "link_doctype",
   "link_to",
   "url",
   "doc_view",
@@ -29,12 +30,18 @@
    "reqd": 1
   },
   {
+   "fieldname": "link_doctype",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Link DocType"
+  },
+  {
    "columns": 3,
    "depends_on": "eval:doc.type && doc.type !== 'URL' && doc.type !== 'Section'",
    "fieldname": "link_to",
    "fieldtype": "Dynamic Link",
    "label": "Link To",
-   "options": "type"
+   "options": "link_doctype"
   },
   {
    "depends_on": "eval:doc.type === 'URL'",

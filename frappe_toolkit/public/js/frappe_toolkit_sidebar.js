@@ -216,6 +216,10 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 			return item.link_to ? frappe.router.slug(item.link_to) : null;
 		}
 
+		if (item.type === 'Report' && item.link_to) {
+			return 'query-report/' + item.link_to;
+		}
+
 		if (item.type === 'Page' && item.link_to) {
 			return item.link_to;
 		}
@@ -269,7 +273,9 @@ frappe.ui.AwesomeSidebar = class AwesomeSidebar {
 
 						let target_route = null;
 
-						if (nav_item.type === 'Workspace') {
+						if (nav_item.type === 'Report' && nav_item.link_to) {
+							target_route = 'query-report/' + nav_item.link_to;
+						} else if (nav_item.type === 'Workspace') {
 							target_route = nav_item.link_to ? frappe.router.slug(nav_item.link_to) : null;
 						} else if (nav_item.type === 'Page' && nav_item.link_to) {
 							target_route = nav_item.link_to;
