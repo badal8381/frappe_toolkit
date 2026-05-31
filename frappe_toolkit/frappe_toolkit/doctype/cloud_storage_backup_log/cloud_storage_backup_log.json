@@ -1,0 +1,190 @@
+{
+ "actions": [],
+ "autoname": "",
+ "creation": "2026-05-31 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "status",
+  "column_break_main",
+  "started_at",
+  "completed_at",
+  "backup_details_section",
+  "db_file_url",
+  "site_config_url",
+  "column_break_backup_1",
+  "files_archive_url",
+  "private_archive_url",
+  "size_info_section",
+  "db_size",
+  "files_size",
+  "column_break_size_1",
+  "total_size",
+  "storage_section",
+  "storage_bucket",
+  "storage_folder",
+  "column_break_storage_1",
+  "local_cleaned",
+  "local_backup_paths",
+  "error_section",
+  "error"
+ ],
+ "fields": [
+  {
+   "default": "Queued",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Queued\nGenerating\nUploading\nSuccess\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "started_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Started At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completed_at",
+   "fieldtype": "Datetime",
+   "label": "Completed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "backup_details_section",
+   "fieldtype": "Section Break",
+   "label": "Backup Details"
+  },
+  {
+   "fieldname": "db_file_url",
+   "fieldtype": "Data",
+   "label": "Database File",
+   "read_only": 1
+  },
+  {
+   "fieldname": "site_config_url",
+   "fieldtype": "Data",
+   "label": "Site Config File",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_backup_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "files_archive_url",
+   "fieldtype": "Data",
+   "label": "Files Archive",
+   "read_only": 1
+  },
+  {
+   "fieldname": "private_archive_url",
+   "fieldtype": "Data",
+   "label": "Private Files Archive",
+   "read_only": 1
+  },
+  {
+   "fieldname": "size_info_section",
+   "fieldtype": "Section Break",
+   "label": "Size Info"
+  },
+  {
+   "fieldname": "db_size",
+   "fieldtype": "Float",
+   "label": "Database Size",
+   "read_only": 1
+  },
+  {
+   "fieldname": "files_size",
+   "fieldtype": "Float",
+   "label": "Files Size",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_size_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_size",
+   "fieldtype": "Float",
+   "label": "Total Size",
+   "read_only": 1
+  },
+  {
+   "fieldname": "storage_section",
+   "fieldtype": "Section Break",
+   "label": "Storage"
+  },
+  {
+   "fieldname": "storage_bucket",
+   "fieldtype": "Data",
+   "label": "Bucket",
+   "read_only": 1
+  },
+  {
+   "fieldname": "storage_folder",
+   "fieldtype": "Data",
+   "label": "Folder",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_storage_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "local_cleaned",
+   "fieldtype": "Check",
+   "label": "Local Files Cleaned",
+   "read_only": 1
+  },
+  {
+   "fieldname": "local_backup_paths",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Local Backup Paths",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "error_section",
+   "fieldtype": "Section Break",
+   "label": "Error"
+  },
+  {
+   "fieldname": "error",
+   "fieldtype": "Long Text",
+   "label": "Error",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-05-31 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frappe Toolkit",
+ "name": "Cloud Storage Backup Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "read": 1,
+   "role": "Administrator"
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [
+  {"color": "Blue", "title": "Queued"},
+  {"color": "Yellow", "title": "Generating"},
+  {"color": "Orange", "title": "Uploading"},
+  {"color": "Green", "title": "Success"},
+  {"color": "Red", "title": "Failed"}
+ ],
+ "track_changes": 0
+}
