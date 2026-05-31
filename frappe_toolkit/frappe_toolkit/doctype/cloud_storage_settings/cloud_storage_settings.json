@@ -1,0 +1,379 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-31 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "column_break_top",
+  "enable_backups",
+  "tab_connection",
+  "connection_section",
+  "provider",
+  "r2_account_id",
+  "column_break_conn",
+  "access_key_id",
+  "secret_access_key",
+  "config_section",
+  "region",
+  "endpoint_url",
+  "bucket_name",
+  "column_break_cfg",
+  "bucket_region",
+  "folder_prefix",
+  "public_base_url",
+  "tab_upload",
+  "status_html",
+  "upload_section",
+  "upload_on_save",
+  "delete_local_after_upload",
+  "delete_on_trash",
+  "column_break_upl",
+  "presigned_url_expiry",
+  "batch_size",
+  "exempt_section",
+  "exempt_doctypes",
+  "tab_backups",
+  "backup_status_html",
+  "backup_config_section",
+  "backup_frequency",
+  "column_break_bk1",
+  "backup_files",
+  "backup_timeout",
+  "backup_storage_section",
+  "backup_bucket_name",
+  "column_break_bk2",
+  "backup_folder_prefix",
+  "backup_retention_section",
+  "backup_retention_count",
+  "column_break_bkret",
+  "backup_retention_days",
+  "backup_notify_section",
+  "backup_notify_email",
+  "column_break_bk3",
+  "backup_notify_success"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "description": "Master switch for offloading File attachments to cloud object storage",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable Cloud Storage"
+  },
+  {
+   "fieldname": "column_break_top",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Enable scheduled and on-demand site backups to cloud storage",
+   "fieldname": "enable_backups",
+   "fieldtype": "Check",
+   "label": "Enable Cloud Backups"
+  },
+  {
+   "fieldname": "tab_connection",
+   "fieldtype": "Tab Break",
+   "label": "Connection"
+  },
+  {
+   "fieldname": "connection_section",
+   "fieldtype": "Section Break",
+   "label": "Storage Credentials"
+  },
+  {
+   "default": "Cloudflare R2",
+   "description": "S3-compatible object storage provider",
+   "fieldname": "provider",
+   "fieldtype": "Select",
+   "label": "Provider",
+   "options": "AWS S3\nWasabi\nBackblaze B2\nDigitalOcean Spaces\nCloudflare R2\nVultr Object Storage\nLinode Object Storage\nScaleway\nIDrive e2\nMinIO / Other"
+  },
+  {
+   "depends_on": "eval:doc.provider=='Cloudflare R2'",
+   "description": "Cloudflare account ID. Endpoint becomes https://<account_id>.r2.cloudflarestorage.com",
+   "fieldname": "r2_account_id",
+   "fieldtype": "Data",
+   "label": "R2 Account ID",
+   "mandatory_depends_on": "eval:doc.enabled && doc.provider=='Cloudflare R2'"
+  },
+  {
+   "fieldname": "column_break_conn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "access_key_id",
+   "fieldtype": "Data",
+   "label": "Access Key ID",
+   "mandatory_depends_on": "eval:doc.enabled"
+  },
+  {
+   "fieldname": "secret_access_key",
+   "fieldtype": "Password",
+   "label": "Secret Access Key",
+   "mandatory_depends_on": "eval:doc.enabled"
+  },
+  {
+   "fieldname": "config_section",
+   "fieldtype": "Section Break",
+   "label": "Bucket Configuration"
+  },
+  {
+   "description": "e.g. us-east-1, eu-west-1. Automatically 'auto' for Cloudflare R2.",
+   "fieldname": "region",
+   "fieldtype": "Data",
+   "label": "Region"
+  },
+  {
+   "description": "Auto-filled from provider + region. Editable for MinIO / Other.",
+   "fieldname": "endpoint_url",
+   "fieldtype": "Data",
+   "label": "Endpoint URL"
+  },
+  {
+   "fieldname": "bucket_name",
+   "fieldtype": "Data",
+   "label": "Bucket Name",
+   "mandatory_depends_on": "eval:doc.enabled"
+  },
+  {
+   "fieldname": "column_break_cfg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Optional bucket-specific region override. Leave blank to use Region.",
+   "fieldname": "bucket_region",
+   "fieldtype": "Data",
+   "label": "Bucket Region"
+  },
+  {
+   "description": "Prefix for object keys. Defaults to the site name if blank.",
+   "fieldname": "folder_prefix",
+   "fieldtype": "Data",
+   "label": "Folder Prefix"
+  },
+  {
+   "description": "Public domain for serving PUBLIC files directly (e.g. https://files.example.com or https://pub-xxxx.r2.dev). Leave blank to serve all files via presigned URLs.",
+   "fieldname": "public_base_url",
+   "fieldtype": "Data",
+   "label": "Public Base URL (CDN / R2 Public Domain)"
+  },
+  {
+   "fieldname": "tab_upload",
+   "fieldtype": "Tab Break",
+   "label": "File Offload"
+  },
+  {
+   "depends_on": "eval:doc.enabled",
+   "fieldname": "status_html",
+   "fieldtype": "HTML",
+   "label": "Storage Status"
+  },
+  {
+   "depends_on": "eval:doc.enabled",
+   "fieldname": "upload_section",
+   "fieldtype": "Section Break",
+   "label": "Upload Settings"
+  },
+  {
+   "default": "0",
+   "description": "Upload files to cloud storage immediately when attached (via background job). When off, the hourly scheduler sweeps them up.",
+   "fieldname": "upload_on_save",
+   "fieldtype": "Check",
+   "label": "Instant Upload"
+  },
+  {
+   "default": "1",
+   "description": "Remove the local copy after a confirmed upload",
+   "fieldname": "delete_local_after_upload",
+   "fieldtype": "Check",
+   "label": "Delete Local File After Upload"
+  },
+  {
+   "default": "1",
+   "description": "When a File is deleted in ERP, also delete the object from cloud storage",
+   "fieldname": "delete_on_trash",
+   "fieldtype": "Check",
+   "label": "Delete Cloud Object on ERP Deletion"
+  },
+  {
+   "fieldname": "column_break_upl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "900",
+   "description": "Presigned URL validity in seconds (default: 900 = 15 minutes)",
+   "fieldname": "presigned_url_expiry",
+   "fieldtype": "Int",
+   "label": "Presigned URL Expiry (seconds)"
+  },
+  {
+   "default": "50",
+   "description": "Files processed per batch for scheduled uploads, bulk migration, and cleanup",
+   "fieldname": "batch_size",
+   "fieldtype": "Int",
+   "label": "Batch Size"
+  },
+  {
+   "depends_on": "eval:doc.enabled",
+   "description": "Files attached to these DocTypes will NOT be uploaded to cloud storage",
+   "fieldname": "exempt_section",
+   "fieldtype": "Section Break",
+   "label": "Exempt DocTypes"
+  },
+  {
+   "fieldname": "exempt_doctypes",
+   "fieldtype": "Table",
+   "label": "Exempt DocTypes",
+   "options": "Cloud Storage Exempt DocType"
+  },
+  {
+   "fieldname": "tab_backups",
+   "fieldtype": "Tab Break",
+   "label": "Backups"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "fieldname": "backup_status_html",
+   "fieldtype": "HTML",
+   "label": "Backup Status"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "fieldname": "backup_config_section",
+   "fieldtype": "Section Break",
+   "label": "Backup Configuration"
+  },
+  {
+   "default": "Daily",
+   "depends_on": "eval:doc.enable_backups",
+   "fieldname": "backup_frequency",
+   "fieldtype": "Select",
+   "label": "Backup Frequency",
+   "mandatory_depends_on": "eval:doc.enable_backups",
+   "options": "Daily\nWeekly\nMonthly\nNone"
+  },
+  {
+   "fieldname": "column_break_bk1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Include public and private file tarballs in the backup",
+   "fieldname": "backup_files",
+   "fieldtype": "Check",
+   "label": "Backup Files"
+  },
+  {
+   "default": "6000",
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Max time (seconds) for the backup background job. Increase for large sites. Default: 6000 (100 min).",
+   "fieldname": "backup_timeout",
+   "fieldtype": "Int",
+   "label": "Backup Job Timeout (seconds)"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "fieldname": "backup_storage_section",
+   "fieldtype": "Section Break",
+   "label": "Backup Storage"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Separate bucket for backups. Leave blank to use the main bucket.",
+   "fieldname": "backup_bucket_name",
+   "fieldtype": "Data",
+   "label": "Backup Bucket Name"
+  },
+  {
+   "fieldname": "column_break_bk2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Object key prefix for backup files",
+   "fieldname": "backup_folder_prefix",
+   "fieldtype": "Data",
+   "label": "Backup Folder Path"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "fieldname": "backup_retention_section",
+   "fieldtype": "Section Break",
+   "label": "Retention"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Keep only the last N backups. Set 0 to disable.",
+   "fieldname": "backup_retention_count",
+   "fieldtype": "Int",
+   "label": "Keep Last N Backups"
+  },
+  {
+   "fieldname": "column_break_bkret",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Delete backups older than N days. Set 0 to disable.",
+   "fieldname": "backup_retention_days",
+   "fieldtype": "Int",
+   "label": "Delete Backups Older Than (days)"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "fieldname": "backup_notify_section",
+   "fieldtype": "Section Break",
+   "label": "Notifications"
+  },
+  {
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Email address to receive backup notifications (failures always notify)",
+   "fieldname": "backup_notify_email",
+   "fieldtype": "Data",
+   "label": "Notify Email"
+  },
+  {
+   "fieldname": "column_break_bk3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.enable_backups",
+   "description": "Send an email notification even when a backup succeeds",
+   "fieldname": "backup_notify_success",
+   "fieldtype": "Check",
+   "label": "Send Email for Successful Backup"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-05-31 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frappe Toolkit",
+ "name": "Cloud Storage Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

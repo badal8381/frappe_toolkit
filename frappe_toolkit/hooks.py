@@ -28,6 +28,43 @@ app_license = "mit"
 app_include_css = "/assets/frappe_toolkit/css/frappe_toolkit_sidebar.css"
 app_include_js = "/assets/frappe_toolkit/js/frappe_toolkit_sidebar.js"
 
+# Cloud Storage (R2 / S3-compatible) integration
+# ----------------------------------------------
+doctype_js = {"File": "public/js/file.js"}
+
+override_doctype_class = {"File": "frappe_toolkit.cloud_storage.overrides.StorageFile"}
+
+doc_events = {
+	"File": {
+		"after_insert": "frappe_toolkit.cloud_storage.handlers.on_file_upload",
+		"on_trash": "frappe_toolkit.cloud_storage.handlers.on_file_delete",
+	}
+}
+
+scheduler_events = {
+	"hourly": [
+		"frappe_toolkit.cloud_storage.scheduler.upload_pending_files",
+	],
+	"daily": [
+		"frappe_toolkit.cloud_storage.backup.take_backups_daily",
+		"frappe_toolkit.cloud_storage.backup.rotate_old_backups_daily",
+	],
+	"weekly_long": [
+		"frappe_toolkit.cloud_storage.backup.take_backups_weekly",
+	],
+	"monthly_long": [
+		"frappe_toolkit.cloud_storage.backup.take_backups_monthly",
+	],
+}
+
+default_log_clearing_doctypes = {
+	"Cloud Storage Backup Log": 90,
+}
+
+after_migrate = [
+	"frappe_toolkit.cloud_storage.setup.after_migrate",
+]
+
 # include js, css files in header of web template
 # web_include_css = "/assets/frappe_toolkit/css/frappe_toolkit.css"
 # web_include_js = "/assets/frappe_toolkit/js/frappe_toolkit.js"
