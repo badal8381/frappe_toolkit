@@ -9,7 +9,7 @@ frappe.ui.form.on("Sidebar Settings", {
 	},
 });
 
-frappe.ui.form.on("Sidebar Item", {
+frappe.ui.form.on("Toolkit Sidebar Item", {
 	type(frm, cdt, cdn) {
 		let row = locals[cdt][cdn];
 		if (row.type === "URL" || row.type === "Section") {

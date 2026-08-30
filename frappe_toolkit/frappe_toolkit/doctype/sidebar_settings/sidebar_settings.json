@@ -26,13 +26,13 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Sidebar Item"
+   "options": "Toolkit Sidebar Item"
   }
  ],
  "index_web_pages_for_search": 0,
  "issingle": 1,
  "links": [],
- "modified": "2025-01-01 00:00:00.000000",
+ "modified": "2026-08-30 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Frappe Toolkit",
  "name": "Sidebar Settings",

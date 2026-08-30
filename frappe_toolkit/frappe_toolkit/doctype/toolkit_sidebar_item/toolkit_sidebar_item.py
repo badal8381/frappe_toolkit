@@ -2,5 +2,5 @@ import frappe
 from frappe.model.document import Document
 
 
-class SidebarItem(Document):
+class ToolkitSidebarItem(Document):
 	pass
